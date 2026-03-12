@@ -1,4 +1,4 @@
-package _my.test02;
+package test03;
 
 import javax.swing.*;
 
@@ -16,7 +16,7 @@ public class Player extends JLabel implements Moveable {
     private final int JUMP_SPEED = 2; //점프 /낙하 속도
     private final int JUMP_HEIGHT = 130; //점프 최대 높이
 
-    //이동 상태 플래스
+    //이동 상태 플래그
     //true = 해당 방향으로 이동 중(while 루프 조건)
     //false = 멈춤( while 루프 탈출 -> thread 종료)
     private boolean left = false;
@@ -24,13 +24,79 @@ public class Player extends JLabel implements Moveable {
     private boolean up = false;
     private boolean down = false;
 
-    //BubbleFrame의 Key 이벤트에서 호출할 수 있도록 setter설정
+    //벽 충돌 상태 플래그
+    private boolean leftWallCrash;
+    private boolean rightWallCrash;
+
+    //getter
+
+    @Override
+    public int getY() {
+        return y;
+    }
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public boolean isLeftWallCrash() {
+        return leftWallCrash;
+    }
+
+    public boolean isRightWallCrash() {
+        return rightWallCrash;
+    }
+
+
+    //setter
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public void setLeft(boolean left) {
         this.left = left;
     }
 
     public void setRight(boolean right) {
         this.right = right;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    public void setLeftWallCrash(boolean leftWallCrash) {
+        this.leftWallCrash = leftWallCrash;
+    }
+
+    public void setRightWallCrash(boolean rightWallCrash) {
+        this.rightWallCrash = rightWallCrash;
     }
 
     public Player() {
@@ -110,7 +176,7 @@ public class Player extends JLabel implements Moveable {
     @Override
     public void up() {
         //점프 기능을 어떻게 구현할까?
-        if (up){
+        if (up) {
             return;
         }
         up = true;
@@ -119,9 +185,9 @@ public class Player extends JLabel implements Moveable {
             @Override
             public void run() {
                 //130 / 2 --> 65 반복 65 픽셀 업
-                for (int i = 0; i < JUMP_HEIGHT/JUMP_SPEED; i++) {
+                for (int i = 0; i < JUMP_HEIGHT / JUMP_SPEED; i++) {
                     y = y - JUMP_SPEED;
-                    setLocation(x,y);
+                    setLocation(x, y);
                     try {
                         Thread.sleep(5); //5ms 간격(낙하보다 느리게 설정 낙하 3ms)
                     } catch (InterruptedException e) {
@@ -150,7 +216,7 @@ public class Player extends JLabel implements Moveable {
                         throw new RuntimeException(e);
                     }
                 }
-                down =false;
+                down = false;
             }
         }).start();
 

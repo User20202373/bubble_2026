@@ -1,4 +1,4 @@
-package _my.test02;
+package test03;
 
 public interface Moveable {
     public abstract void left();

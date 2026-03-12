@@ -1,4 +1,4 @@
-package _my.test02;
+package test03;
 
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
@@ -13,6 +13,8 @@ public class BubbleFrame extends JFrame {
         initData();
         setInitLayout();
         addEventListener();
+        //충돌감지 백그라운드 서비스 시작
+        new Thread(new BackgroundPlayerService(player)).start();
     }
 
     private void initData() {
@@ -32,9 +34,7 @@ public class BubbleFrame extends JFrame {
         setLocationRelativeTo(null); //화면 정 중앙 배치 (프레임)
 
         backgroundMap.add(player);
-
         setVisible(true);// 화면에 보이게
-
     }
 
     private void addEventListener() {
@@ -48,9 +48,7 @@ public class BubbleFrame extends JFrame {
                     case KeyEvent.VK_RIGHT:
                         player.setRight(false);
                         break;
-
                 }
-
             }
 
             @Override
@@ -58,20 +56,23 @@ public class BubbleFrame extends JFrame {
                 //방향키 코드를 Player의 이동 메서드로 연결
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
-                        player.left();
+                        //이동 중이 아니고 AND 벽에 충돌하지 않은 상태일 때만 left() 호출 가능
+                        if (player.isLeft() == false && player.isLeftWallCrash() == false){
+                            player.left();
+                        }
                         break;
 
                     case KeyEvent.VK_RIGHT:
-                        player.right();
+                        //이동 중이 아니고 AND 벽에 충돌하지 않은 상태일 때만 right() 호출 가능
+                        if (player.isRight() == false && player.isRightWallCrash() == false){
+                            player.right();
+                        }
                         break;
 
                     case KeyEvent.VK_UP:
                         player.up();
                         break;
-
-
                 }
-
             }
         });
     }
@@ -80,5 +81,4 @@ public class BubbleFrame extends JFrame {
     public static void main(String[] args) {
         new BubbleFrame();
     }
-
 }
