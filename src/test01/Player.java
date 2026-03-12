@@ -11,6 +11,7 @@ public class Player extends JLabel implements Moveable {
     private ImageIcon playerR;
     private ImageIcon playerL;
 
+
     public Player() {
         initData();
         setInitLayout();
