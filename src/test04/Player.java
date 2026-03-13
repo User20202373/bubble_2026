@@ -4,6 +4,7 @@ import test05.PlayerWay;
 
 import javax.swing.*;
 
+
 public class Player extends JLabel implements Moveable {
     //플레이어의 현재 좌표 상태 값
     private int x;

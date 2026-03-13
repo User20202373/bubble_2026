@@ -1,7 +1,12 @@
 package bubble;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.swing.*;
 
+@Getter
+@Setter
 public class Bubble extends JLabel {
 
     private int x;
@@ -11,23 +16,7 @@ public class Bubble extends JLabel {
     private Player player;
 
 
-    @Override
-    public int getX() {
-        return x;
-    }
 
-    @Override
-    public int getY() {
-        return y;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 
     //DI <- 용어 기억하기
     public Bubble(Player player) {

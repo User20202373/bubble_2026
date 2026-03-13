@@ -15,7 +15,7 @@ public class Player extends JLabel implements Moveable {
     private final int SPEED = 4; //좌우 이동 속도 (픽셀)
     private final int JUMP_SPEED = 2; //점프 /낙하 속도
     private final int JUMP_HEIGHT = 130; //점프 최대 높이
-
+    private PlayerWay playerWay = PlayerWay.RIGHT; // 게임시작시 오른쪽 바람 봄
     //이동 상태 플래그
     //true = 해당 방향으로 이동 중(while 루프 조건)
     //false = 멈춤( while 루프 탈출 -> thread 종료)
@@ -29,6 +29,10 @@ public class Player extends JLabel implements Moveable {
     private boolean rightWallCrash;
 
     //getter
+
+    public PlayerWay getPlayerWay() {
+        return playerWay;
+    }
 
     @Override
     public int getY() {
@@ -97,6 +101,10 @@ public class Player extends JLabel implements Moveable {
 
     public void setRightWallCrash(boolean rightWallCrash) {
         this.rightWallCrash = rightWallCrash;
+    }
+
+    public void setPlayerWay(PlayerWay playerWay) {
+        this.playerWay = playerWay;
     }
 
     public Player() {
