@@ -41,8 +41,8 @@ public class BubbleFrame extends JFrame {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                switch (e.getKeyCode()){
-                    case KeyEvent.VK_LEFT :
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_LEFT:
                         player.setLeft(false);
                         break;
                     case KeyEvent.VK_RIGHT:
@@ -57,14 +57,14 @@ public class BubbleFrame extends JFrame {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
                         //이동 중이 아니고 AND 벽에 충돌하지 않은 상태일 때만 left() 호출 가능
-                        if (player.isLeft() == false && player.isLeftWallCrash() == false){
+                        if (player.isLeft() == false && player.isLeftWallCrash() == false) {
                             player.left();
                         }
                         break;
 
                     case KeyEvent.VK_RIGHT:
                         //이동 중이 아니고 AND 벽에 충돌하지 않은 상태일 때만 right() 호출 가능
-                        if (player.isRight() == false && player.isRightWallCrash() == false){
+                        if (player.isRight() == false && player.isRightWallCrash() == false) {
                             player.right();
                         }
                         break;
@@ -72,9 +72,24 @@ public class BubbleFrame extends JFrame {
                     case KeyEvent.VK_UP:
                         player.up();
                         break;
+
+                    case KeyEvent.VK_SPACE:
+                        fireBubble();
+                        break;
                 }
             }
         });
+    }
+
+    //todo 임시 버블 클래스 생성
+
+
+    private void fireBubble() {
+        Bubble bubble = new Bubble(player);
+        backgroundMap.add(bubble);
+        //동적으로 컴포넌트가 그려지기 때문에 버그 발생 가능
+        backgroundMap.revalidate(); //레이아웃 재 계산
+        backgroundMap.repaint(); //화면을 다시 그려라
     }
 
     //테스트 코드
