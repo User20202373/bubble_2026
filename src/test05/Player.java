@@ -1,6 +1,4 @@
-package test04;
-
-import test05.PlayerWay;
+package test05;
 
 import javax.swing.*;
 
@@ -29,14 +27,6 @@ public class Player extends JLabel implements Moveable {
     //벽 충돌 상태 플래그
     private boolean leftWallCrash;
     private boolean rightWallCrash;
-
-    /**
-     * 플레이어 현재 방향 (enum타입)
-     * left() PlayerWay.LEFT변경
-     * right()PayterWay.Right
-     */
-
-    private PlayerWay playerWay = PlayerWay.RIGHT; // 게임 시작 시  오른쪽 바람 붐
 
     //getter
 
@@ -74,10 +64,7 @@ public class Player extends JLabel implements Moveable {
         return rightWallCrash;
     }
 
-    public PlayerWay getPlayerWay() {
 
-        return playerWay;
-    }
     //setter
 
     public void setX(int x) {
@@ -110,10 +97,6 @@ public class Player extends JLabel implements Moveable {
 
     public void setRightWallCrash(boolean rightWallCrash) {
         this.rightWallCrash = rightWallCrash;
-    }
-
-    public void setPlayerWay(PlayerWay playerWay) {
-        this.playerWay = playerWay;
     }
 
     public Player() {
@@ -168,7 +151,6 @@ public class Player extends JLabel implements Moveable {
         if (right) {
             return;
         }
-        playerWay = PlayerWay.RIGHT;
         right = true;
         setIcon(playerR);
 
