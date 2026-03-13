@@ -9,6 +9,9 @@ public class Bubble extends JLabel {
 
     private ImageIcon bubbleIcon;
     private Player player;
+    private boolean Space = false;
+
+    private final int SPEED = 4; //좌우 이동 속도 (픽셀)
 
 
     @Override
@@ -41,6 +44,7 @@ public class Bubble extends JLabel {
 
         bubbleIcon = new ImageIcon("img/bubble.png");
 
+
     }
 
     private void setInitLayout() {
@@ -52,4 +56,31 @@ public class Bubble extends JLabel {
         setVisible(true);
     }
 
+    private void Space() {
+        if (Space) {
+            return;
+        }
+        Space = true;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < SPEED + 50; i++) {
+                    x = x + SPEED;
+                    setLocation(x, y);
+
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+            }
+        }).start();
+
+
+    }
 }
+
+

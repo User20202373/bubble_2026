@@ -75,6 +75,7 @@ public class BubbleFrame extends JFrame {
 
                     case KeyEvent.VK_SPACE:
                         fireBubble();
+
                         break;
                 }
             }
