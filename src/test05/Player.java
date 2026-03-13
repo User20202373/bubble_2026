@@ -1,47 +1,51 @@
 package test05;
 
+
 import javax.swing.*;
 
 public class Player extends JLabel implements Moveable {
-    //플레이어의 현재 좌표 상태 값
+
+    // 플레이어의 현재 좌표 상태 값
     private int x;
     private int y;
 
-    //좌우 방향 이미지(방향키에 따라서 이미지 전환)
+    // 좌우 방향 이미지(방향키에 따라서 이미지 전환)
     private ImageIcon playerR;
     private ImageIcon playerL;
 
-    //속도 상수
-    private final int SPEED = 4; //좌우 이동 속도 (픽셀)
-    private final int JUMP_SPEED = 2; //점프 /낙하 속도
-    private final int JUMP_HEIGHT = 130; //점프 최대 높이
-    private PlayerWay playerWay = PlayerWay.RIGHT; // 게임시작시 오른쪽 바람 봄
-    //이동 상태 플래그
-    //true = 해당 방향으로 이동 중(while 루프 조건)
-    //false = 멈춤( while 루프 탈출 -> thread 종료)
+    // 속도 상수
+    private final int SPEED = 4;           // 좌우 이동 속도 (픽셀)
+    private final int JUMP_SPEED = 2;      // 점프/낙하 속도
+    private final int JUMP_HEIGHT = 130;   // 점프 최대 높이
+
+    // 이동 상태 플래그
+    // true = 해당 방향으로 이동 중 (while 루프 조건)
+    // false = 멈춤 (while 루프 탈출 -> Thread 종료)
     private boolean left = false;
     private boolean right = false;
     private boolean up = false;
     private boolean down = false;
 
-    //벽 충돌 상태 플래그
+    // 벽 충돌 상태 플래그
     private boolean leftWallCrash;
     private boolean rightWallCrash;
 
-    //getter
+    /**
+     * 플레이어 현재 방향(enum 타입)
+     * - left()  -> playerWay = PlayerWay.LEFT 변경
+     * - right() -> playerWay = PlayerWay.Right 변경
+     */
+    private PlayerWay playerWay = PlayerWay.RIGHT; // 게임시작시 오른쪽 바람 봄
 
-    public PlayerWay getPlayerWay() {
-        return playerWay;
+    /// getter
+    @Override
+    public int getX() {
+        return x;
     }
 
     @Override
     public int getY() {
         return y;
-    }
-
-    @Override
-    public int getX() {
-        return x;
     }
 
     public boolean isLeft() {
@@ -68,9 +72,11 @@ public class Player extends JLabel implements Moveable {
         return rightWallCrash;
     }
 
+    public PlayerWay getPlayerWay() {
+        return playerWay;
+    }
 
-    //setter
-
+    /// setter
     public void setX(int x) {
         this.x = x;
     }
@@ -110,7 +116,6 @@ public class Player extends JLabel implements Moveable {
     public Player() {
         initData();
         setInitLayout();
-
     }
 
     private void initData() {
@@ -119,28 +124,29 @@ public class Player extends JLabel implements Moveable {
     }
 
     private void setInitLayout() {
-        //캐릭터 초기 위치 설정
+        // 캐릭터 초기 위치 설정
         x = 55;
-        y = 555;
+        y = 535;
         setSize(50, 50);
         setIcon(playerR); // 초기 방향 설정
         setLocation(x, y);
-
     }
+
 
     @Override
     public void left() {
         if (left) {
-            return; //이미 이동 중이면 중복 Thread 생성 방지
+            return;  // 이미 이동 중이면 중복 Thread 생성 방지
         }
-        left = true;//빼먹지말것
+        playerWay = PlayerWay.LEFT;
+        left = true;
         setIcon(playerL);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //left 가 true 인 동안 계속 이동
-                //keyReleased에서 setLeft(false)가 호출이 되면 while 탈출
+                // left 가 true 인 동안 계속 이동
+                // keyReleased 에서 setLeft(false) 가 호출이 되면 while 탈출
                 while (left) {
                     x = x - SPEED;
                     setLocation(x, y);
@@ -159,9 +165,9 @@ public class Player extends JLabel implements Moveable {
         if (right) {
             return;
         }
+        playerWay = PlayerWay.RIGHT;
         right = true;
         setIcon(playerR);
-
 
         new Thread(new Runnable() {
             @Override
@@ -176,15 +182,13 @@ public class Player extends JLabel implements Moveable {
                     }
                 }
             }
-
         }).start();
-
     }
 
     @Override
     public void up() {
-        //점프 기능을 어떻게 구현할까?
-        if (up) {
+        // 점프 기능을 어떻게 구현할까?
+        if(up) {
             return;
         }
         up = true;
@@ -192,20 +196,21 @@ public class Player extends JLabel implements Moveable {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //130 / 2 --> 65 반복 65 픽셀 업
+                // 130 / 2 --> 65 반복 65 픽셀 업
                 for (int i = 0; i < JUMP_HEIGHT / JUMP_SPEED; i++) {
                     y = y - JUMP_SPEED;
                     setLocation(x, y);
                     try {
-                        Thread.sleep(5); //5ms 간격(낙하보다 느리게 설정 낙하 3ms)
+                        Thread.sleep(5); // 5ms 간격 (낙하 보다 느리게 설정 낙하 3ms )
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 }
-                up = false;//최고점 도달 하고 -> 점프 상태 해제
-                down(); //자동 낙하 시작
+                up = false; // 최고점 도달 하고 -> 점프 상태 해제
+                down(); // 자동 낙하 시작
             }
         }).start();
+
 
     }
 
